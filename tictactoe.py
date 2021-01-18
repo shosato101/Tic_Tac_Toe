@@ -81,13 +81,13 @@ while True:
         window[event].update(f"{field[event]}")
 
     if event == "reset":
-        done.clear()
-        count = 0
         for i in range(9):
             field[i] = i
             event = i
             window[event].update("")
-            window["turn"].update("○'s turn")
+        done.clear()
+        count = 0
+        window["turn"].update("○'s turn")
 
     if len(done) > 9:
         if count % 2 == 0:
