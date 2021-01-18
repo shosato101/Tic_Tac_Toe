@@ -1,67 +1,101 @@
-#!/usr/bin/env python
 import PySimpleGUI as sg
 
 
-
-# Demonstrates a number of PySimpleGUI features including:
-#   Default element size
-#   auto_size_buttons
-#   Button
-#   Dictionary return values
-#   update of elements in form (Text, Input)
+field = {0:"0", 1:"1", 2:"2", 3:"3", 4:"4", 5:"5", 6:"6", 7:"7", 8:"8"}
+done = []
+count = 0
 
 
-layout = [[sg.Text('')],
-          [sg.Button(f'{field[0]}', key=0,), sg.Button(f'{field[1]}', key=1), sg.Button(f'{field[2]}', key=2)],
-          [sg.Button(f'{field[3]}', key=3), sg.Button(f'{field[4]}', key=4), sg.Button(f'{field[5]}', key=5)],
-          [sg.Button(f'{field[6]}', key=6), sg.Button(f'{field[7]}', key=7), sg.Button(f'{field[8]}', key=8)],
-          [sg.Button(f'Reset')]
+def check_result():
+        #横のライン
+        if field[0] == field[1] == field[2]:
+            sg.popup(f"{field[0]}' win!")
+            finish()
+        elif field[3] == field[4] == field[5]:
+            sg.popup(f"{field[3]}' win!")
+            finish()
+        elif field[6] == field[7] == field[8]:
+            sg.popup(f"{field[6]}' win!")
+            finish()
+        #縦のライン
+        elif field[0] == field[3] == field[6]:
+            sg.popup(f"{field[0]}' win!")
+            finish()
+        elif field[1] == field[4] == field[7]:
+            sg.popup(f"{field[1]}' win!")
+            finish()
+        elif field[2] == field[5] == field[8]:
+            sg.popup(f"{field[2]}' win!")
+            finish()
+        #斜めのライン
+        elif field[0] == field[4] == field[8]:
+            sg.popup(f"{field[0]}' win!")
+            finish()
+        elif field[2] == field[4] == field[6]:
+            sg.popup(f"{field[2]}' win!")
+            finish()
+        elif count == 9:
+            sg.popup(f"Draw")
+#            finish()
+
+def finish():
+    for i in range(9):
+        done.append(i)
+    
+
+layout = [[sg.Text("○'s turn", key="turn", font=('Helvetica',19), size=(15, 1)), sg.Button("Reset", key="reset", size=(5, 1))],
+          [sg.Button(key=0, font=('Helvetica', 50)), sg.Button(key=1, font=('Helvetica', 50)), sg.Button(key=2, font=('Helvetica', 50))],
+          [sg.Button(key=3, font=('Helvetica', 50)), sg.Button(key=4, font=('Helvetica', 50)), sg.Button(key=5, font=('Helvetica', 50))],
+          [sg.Button(key=6, font=('Helvetica', 50)), sg.Button(key=7, font=('Helvetica', 50)), sg.Button(key=8, font=('Helvetica', 50))],
           ]
 
 window = sg.Window('Tic Tac Toe', layout,
-                   default_button_element_size=(5, 5),
+                   default_button_element_size=(2, 1),
                    auto_size_buttons=False,
                    grab_anywhere=False)
+                    
 
 # Loop forever reading the form's values, updating the Input field
 while True:
     event, values = window.read()  # read the form
+ 
     if event == sg.WIN_CLOSED:  # if the X button clicked, just exit
         break
+    
+    if event in done:
+        continue
 
-    if event in '012345678':
+    elif event in list(range(9)):
+        if count % 2 == 0:
+            field[event] = "○"
+            done.append(event)
+            count += 1
+            check_result()
+            window["turn"].update("×'s turn")
+        else:
+            field[event] = "×"
+            done.append(event)
+            count += 1
+            check_result()
+            window["turn"].update("○'s turn") 
+        window[event].update(f"{field[event]}")
 
-        marking()
+    if event == "reset":
+        done.clear()
+        count = 0
+        for i in range(9):
+            field[i] = i
+            event = i
+            window[event].update("")
+            window["turn"].update("○'s turn")
 
-         = values['']  
-     
-    elif event == 'Submit':
-        keys_entered = values['input']
-        window['out'].update(keys_entered)  # output the final string
+    if len(done) > 9:
+        if count % 2 == 0:
+            window["turn"].update("Finish!  ×'s win!")
+        else:
+            window["turn"].update("Finish!  ○'s win!")
+    if len(done) == 9 and count == 9:
+            window["turn"].update("Draw....")
 
-    # change the form to reflect current key string
-    window['input'].update(keys_entered)
+
 window.close()
-
-
-#3*3=9マスのフィールドを用意する
-    #二重リストfield[[1, 2, 3,], [4, 5, 6], [7, 8, 9]]を用意する
-#マスの状態は、[○, ×, 無表示]
-#プレイヤー、CPUが交互にマスを埋めていく
-#同じマークが三つ並んだら勝ちのテキストを表示。並ばなければ引き分けを表示
-
-#勝ちの判定
-    #横のライン
-        #field[:3]
-        #field[3:6]
-        #field[6:9]
-            
-    #縦のライン
-        #field[0][0] and field[1][0] and field[2][0]
-        #field[0][1] and field[1][1] and field[2][1]
-        #field[0][2] and field[1][2] and field[2][2]
-    #斜めのライン
-        #field[0][0] and field[1][1] and field[2][2]
-        #field[0][2] and field[1][1] and field[2][0]
-
-#count 1 =
