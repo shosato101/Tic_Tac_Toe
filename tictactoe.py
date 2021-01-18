@@ -36,21 +36,22 @@ def check_result():
             finish()
         elif count == 9:
             sg.popup(f"Draw")
-#            finish()
 
 def finish():
     for i in range(9):
         done.append(i)
     
 
-layout = [[sg.Text("○'s turn", key="turn", font=('Helvetica',19), size=(15, 1)), sg.Button("Reset", key="reset", size=(5, 1))],
-          [sg.Button(key=0, font=('Helvetica', 50)), sg.Button(key=1, font=('Helvetica', 50)), sg.Button(key=2, font=('Helvetica', 50))],
-          [sg.Button(key=3, font=('Helvetica', 50)), sg.Button(key=4, font=('Helvetica', 50)), sg.Button(key=5, font=('Helvetica', 50))],
-          [sg.Button(key=6, font=('Helvetica', 50)), sg.Button(key=7, font=('Helvetica', 50)), sg.Button(key=8, font=('Helvetica', 50))],
+layout = [[sg.Text("○'s turn", key="turn", font=('Helvetica', 19), size=(15, 1)),
+           sg.Button("Reset", key="reset", size=(5, 1), font=('Helvetica', 9))],
+          [sg.Button(key=0), sg.Button(key=1), sg.Button(key=2)],
+          [sg.Button(key=3), sg.Button(key=4), sg.Button(key=5)],
+          [sg.Button(key=6), sg.Button(key=7), sg.Button(key=8)],
           ]
 
 window = sg.Window('Tic Tac Toe', layout,
                    default_button_element_size=(2, 1),
+                   font=('Helvetica', 50),
                    auto_size_buttons=False,
                    grab_anywhere=False)
                     
