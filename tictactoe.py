@@ -51,11 +51,11 @@ window = sg.Window('Tic Tac Toe', layout,
                    grab_anywhere=False)
                     
 
-# Loop forever reading the form's values, updating the Input marks
+#イベントループしつつ、作業に応じてウィンドウの情報を更新する
 while True:
-    event, values = window.read()  # read the form
+    event, values = window.read()  # 情報を更新するため
  
-    if event == sg.WIN_CLOSED:  # if the X button clicked, just exit
+    if event == sg.WIN_CLOSED:  # タイトルバーの×ボタンで終了させるため
         break
     
     if event in done:  #マークの上書き防止、およびゲーム終了後のマーク記入禁止のため。
@@ -82,7 +82,7 @@ while True:
     if event == "reset":
         for i in range(9): 
             marks[i] = i  #結果判定用の辞書をリセット。
-            window[i].update("")  #書き込んだ○×の表示を消すため。
+            window[i].update("")  #書き込んだ○×の表示を消す。
         done = []
         count = 0
         window["turn"].update("○'s turn")
