@@ -21,7 +21,9 @@ count : int
 
 
 
-field = {0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8"}  #結果判定のため。
+field = {0: "Button0", 1: "Button1", 2: "Button2",  #結果判定のため。
+         3: "Button3", 4: "Button4", 5: "Button5",
+         6: "Button6", 7: "Button7", 8: "Button8"}  
 done = []  #選択済みボタンのキーを格納。
 count = 0  #ゲームのターン数。
 
@@ -47,20 +49,20 @@ def check_result():
             window["turn"].update("Finish!  ○'s win!")
             finish()
         
-    elif len(done) == 9 and count == 9:
+    elif len(done) == 9:
         sg.popup("Draw", keep_on_top=True)
         window["turn"].update("Draw....")
 
 def finish():
-    for i in range(9):  #0-8までの9つの要素を追加で全て格納し、フィールドの全てのボタンを無効化する。
-        done.append(i)  #つまり決着後は必ずlen(done) > 9となる。(len(done)が9以下であればゲームは続行中となる)
+    for i in range(9):  #フィールドの全てのボタンを無効化する。
+        done.append(i)  #ゲーム終了後はlen(done) > 9。続行中はlen(done) < 9 。
                         
     
 
 layout = [[sg.Text("○'s turn", key="turn", font=('Helvetica', 19), size=(15, 1)),
            sg.Button("Reset", key="reset", size=(5, 1), font=('Helvetica', 9))],
-          [sg.Button(key=0), sg.Button(key=1), sg.Button(key=2)],  #ボタンのキーはfield{}のキーに相当。
-          [sg.Button(key=3), sg.Button(key=4), sg.Button(key=5)],  #つまりボタンの配置が、そのままfield{}の座標。
+          [sg.Button(key=0), sg.Button(key=1), sg.Button(key=2)], 
+          [sg.Button(key=3), sg.Button(key=4), sg.Button(key=5)],  
           [sg.Button(key=6), sg.Button(key=7), sg.Button(key=8)],
           ]
 
@@ -102,10 +104,11 @@ while True:
     
     if event == "reset":
         for i in range(9): 
-            field[i] = i  #結果判定用の辞書をリセット。
-            window[i].update("")  #書き込んだ○×の表示を消す。
+            field[i] = f"Button{i}" #結果判定用の辞書をリセット。
+            window[i].update("")  #ウィンドウの○×の表示を消す。
         done = []
         count = 0
         window["turn"].update("○'s turn")
+        print(field)
 
 window.close()
